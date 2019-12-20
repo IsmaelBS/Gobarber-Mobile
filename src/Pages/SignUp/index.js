@@ -1,7 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Image } from 'react-native';
 import Background from '~/Components/Background';
 import logo from '~/assets/logo.png';
+import { signUpRequest } from '~/store/modules/auth/actions';
 import {
   Container,
   Form,
@@ -15,7 +17,17 @@ export default function SignUp({ navigation }) {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  function handleSubmit() {}
+  const loading = useSelector(state => state.auth.loading);
+
+  const dispatch = useDispatch();
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [name, setName] = useState();
+
+  function handleSubmit() {
+    dispatch(signUpRequest(name, email, password));
+  }
 
   return (
     <Background>
@@ -30,6 +42,8 @@ export default function SignUp({ navigation }) {
             placeholder="Digite seu nome completo:"
             returnKeyType="next"
             onSubmitEditing={() => emailRef.current.focus()}
+            onChangeText={setName}
+            value={name}
           />
 
           <FormInput
@@ -41,6 +55,8 @@ export default function SignUp({ navigation }) {
             returnKeyType="next"
             ref={emailRef}
             onSubmitEditing={() => passwordRef.current.focus()}
+            onChangeText={setEmail}
+            value={email}
           />
 
           <FormInput
@@ -49,9 +65,13 @@ export default function SignUp({ navigation }) {
             placeholder="Digite sua senha secreta:"
             ref={passwordRef}
             onSubmitEditing={handleSubmit}
+            onChangeText={setPassword}
+            value={password}
           />
 
-          <SubmitButton onPress={handleSubmit}>Criar conta</SubmitButton>
+          <SubmitButton loading={loading} onPress={handleSubmit}>
+            Criar conta
+          </SubmitButton>
         </Form>
         <SignLink
           onPress={() => {
