@@ -18,9 +18,11 @@ export const Form = styled.View`
   align-self: stretch;
   margin-top: 30px;
 `;
+
 export const FormInput = styled(Input)`
   margin-bottom: 10px;
 `;
+
 export const SubmitButton = styled(Button)`
   margin-top: 5px;
 `;
